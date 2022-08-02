@@ -1,5 +1,8 @@
 # Wine
 
+## 仕様書
+下記のNotionに仕様、開発の流れを記載している。
+https://daily-line-76f.notion.site/MottoOtomo-6915b142f5cc43189f4914e0c09639d8
 
 ## Usage
 
