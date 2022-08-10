@@ -2,7 +2,7 @@ version: "3.8"
 
 services:
   front:
-    container_name: front
+    container_name: wine_front
     build:
       context: ./.docker/front
       dockerfile: Dockerfile
@@ -13,7 +13,7 @@ services:
     stdin_open: true
     tty: true
   api:
-    container_name: api
+    container_name: wine_api
     build:
       context: ./.docker/api
       dockerfile: Dockerfile
@@ -26,6 +26,7 @@ services:
     depends_on:
       - db
   db:
+    container_name: wine_db
     image: postgres:14-alpine
     volumes:
       - ./db:/var/lib/postgresql/data
