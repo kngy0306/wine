@@ -5,7 +5,6 @@ RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources
 RUN apt-get update -qq && apt-get install -y nodejs postgresql-client yarn
 WORKDIR /app
 COPY Gemfile /app/Gemfile
-COPY Gemfile.lock /app/Gemfile.lock
 RUN bundle install
 
 COPY entrypoint.sh /usr/bin/

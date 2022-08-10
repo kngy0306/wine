@@ -1,6 +1,30 @@
-version: "3"
+version: "3.8"
 
 services:
+  front:
+    container_name: front
+    build:
+      context: ./.docker/front
+      dockerfile: Dockerfile
+    ports:
+      - 3000:3000
+    volumes:
+      - ./front:/app:cached
+    stdin_open: true
+    tty: true
+  api:
+    container_name: api
+    build:
+      context: ./.docker/api
+      dockerfile: Dockerfile
+    command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
+    volumes:
+      - ./api:/app
+    ports:
+      - "3000:3000"
+    tty: true
+    depends_on:
+      - db
   db:
     image: postgres:14-alpine
     volumes:
@@ -10,16 +34,4 @@ services:
       POSTGRES_PASSWORD: password
       POSTGRES_DB: wine
     ports:
-      - "5432:5432"
-  web:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
-    volumes:
-      - .:/app
-    ports:
-      - "3000:3000"
-    tty: true
-    depends_on:
-      - db
+      - "5432:5432"    
