@@ -7,9 +7,13 @@ services:
       context: ./front
       dockerfile: Dockerfile
     ports:
-      - 3000:3000
+      - 5173:5173
     volumes:
       - ./front:/app:cached
+    environment:
+      - HOST=0.0.0.0
+      - CHOKIDAR_USEPOLLING=true
+    command: yarn dev --host 0.0.0.0
     stdin_open: true
     tty: true
   api:
@@ -21,7 +25,7 @@ services:
     volumes:
       - ./api:/app
     ports:
-      - "8000:3000"
+      - "3000:3000"
     tty: true
     depends_on:
       - db
