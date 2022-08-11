@@ -1,25 +1,42 @@
-version: "3"
+version: "3.8"
 
 services:
-  db:
-    image: postgres:14-alpine
-    volumes:
-      - ./tmp/db:/var/lib/postgresql/data
-    environment:
-      POSTGRES_USER: user
-      POSTGRES_PASSWORD: password
-      POSTGRES_DB: wine
-    ports:
-      - "5432:5432"
-  web:
+  front:
+    container_name: wine_front
     build:
-      context: .
+      context: ./front
+      dockerfile: Dockerfile
+    ports:
+      - 5173:5173
+    volumes:
+      - ./front:/app:cached
+    environment:
+      - HOST=0.0.0.0
+      - CHOKIDAR_USEPOLLING=true
+    command: yarn dev --host 0.0.0.0
+    stdin_open: true
+    tty: true
+  api:
+    container_name: wine_api
+    build:
+      context: ./api
       dockerfile: Dockerfile
     command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
     volumes:
-      - .:/app
+      - ./api:/app
     ports:
       - "3000:3000"
     tty: true
     depends_on:
       - db
+  db:
+    container_name: wine_db
+    image: postgres:14-alpine
+    volumes:
+      - ./wine_db:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: wine
+    ports:
+      - "5432:5432"    
