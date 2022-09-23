@@ -1,6 +1,7 @@
 # Wine
 
 ## 仕様書
+
 下記のNotionに仕様、開発の流れを記載している。<br>
 https://daily-line-76f.notion.site/MottoOtomo-6915b142f5cc43189f4914e0c09639d8
 
@@ -66,4 +67,38 @@ wine_api    | *  Environment: development
 wine_api    | *          PID: 1
 wine_api    | * Listening on http://0.0.0.0:3000
 wine_api    | Use Ctrl-C to stop
+```
+
+## DB作成
+
+`docker compose up -d`などでコンテナを立ち上げておく
+
+### `apiコンテナ`にてテーブル作成
+
+```sh
+# apiコンテナにログイン
+docker compose exec api bash
+
+# 以下、apiコンテナ内
+
+# パッケージ最新化
+bundle install
+
+# テーブル作成
+bin/rails db:migrate
+```
+
+### `dbコンテナ`にてテーブル確認
+
+```sh
+# dbコンテナにログイン
+docker compose exec db bash
+
+# 以下、dbコンテナ内
+
+# postgresにログイン
+psql -h localhost -p 5432 -U user wine_development
+
+# テーブル確認 (usersテーブルの場合)
+\d users
 ```

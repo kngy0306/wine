@@ -1,0 +1,2 @@
+class PersonInCharge < ApplicationRecord
+end
