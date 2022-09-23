@@ -1,0 +1,2 @@
+class CallResultSecondary < ApplicationRecord
+end

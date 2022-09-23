@@ -1,0 +1,2 @@
+class CallNextAction < ApplicationRecord
+end
